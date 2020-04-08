@@ -10,14 +10,6 @@ export type Code = {
   nDigits: number;
 };
 
-export const getNames = () => {
-  return data.map((d) => d.name);
-};
-
-export const getCodeByName = (name: string): Code | undefined => {
-  return data.find((x) => x.name === name);
-};
-
 export const getInfo = (code: Code) => {
   const { totp, remainingSeconds } = getTOTP(
     code.secret,
@@ -31,7 +23,7 @@ export const getInfo = (code: Code) => {
   const remaining = Math.floor(remainingSeconds / 1000)
     .toString(10)
     .padStart(2, "0");
-  return { code: `${prefix}${totp}`, remaining };
+  return { code: `${prefix}${totp}`, remaining, name: code.name };
 };
 
 export const addCode = (code: Code) => {
