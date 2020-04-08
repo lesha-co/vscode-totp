@@ -12,6 +12,25 @@
   "activationEvents": [
     "*"
   ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "totp.pick",
+        "title": "Get an one-time password"
+      }
+    ],
+    "keybindings": {
+      "command": "totp.pick",
+      "key": "shift+alt+O"
+    },
+    "menus": {
+      "touchBar": [
+        {
+          "command": "totp.pick"
+        }
+      ]
+    }
+  },
   "main": "./out/extension.js",
   "scripts": {
     "vscode:prepublish": "npm run compile",
