@@ -1,47 +1,19 @@
-import * as vsc from "vscode";
-import { getInfo } from "./store";
-import { addTOTP } from "./addTOTP";
-import { data } from "./store/data";
-import { pickOTPService } from "./pickOTP";
-import { addCode, getCodes, merge } from "./store/context";
+import { ExtensionContext, commands } from "vscode";
+import { totpPick } from "./commands/pick";
+import { Command } from "./commands";
+import { totpNew } from "./commands/new";
+import { makeStatusBarItem } from "./makeStatusBarItem";
+import { totpBackup } from "./commands/backup";
+import { totpRestore } from "./commands/restore";
 
-const COMMAND = "totp.pick";
-const makeStatusBarItem = (context: vsc.ExtensionContext) => {
-  const myStatusBarItem = vsc.window.createStatusBarItem(
-    vsc.StatusBarAlignment.Right,
-    100
-  );
-  context.subscriptions.push(myStatusBarItem);
-
-  myStatusBarItem.show();
-  myStatusBarItem.text = "$(key)";
-  return myStatusBarItem;
-};
-
-export function activate(context: vsc.ExtensionContext) {
-  merge(context, data);
+export function activate(context: ExtensionContext) {
   context.subscriptions.push(
-    vsc.commands.registerCommand(COMMAND, async () => {
-      try {
-        const ctxCodes = getCodes(context);
-        const result = await pickOTPService(ctxCodes);
-
-        if (result.button) {
-          const code = await addTOTP(context);
-          addCode(context, code);
-        } else {
-          const info = getInfo(result.data);
-          vsc.env.clipboard.writeText(info.code);
-          vsc.window.showInformationMessage("Password copied to clipboard");
-        }
-      } catch (x) {
-        // debugger;
-      }
-    })
+    commands.registerCommand(Command.NEW, () => totpNew(context)),
+    commands.registerCommand(Command.PICK, () => totpPick(context)),
+    commands.registerCommand(Command.BACKUP, () => totpBackup(context)),
+    commands.registerCommand(Command.RESTORE, () => totpRestore(context)),
+    makeStatusBarItem()
   );
-
-  const myStatusBarItem = makeStatusBarItem(context);
-  myStatusBarItem.command = COMMAND;
 }
 
 // this method is called when your extension is deactivated

@@ -17,6 +17,18 @@
       {
         "command": "totp.pick",
         "title": "Get an one-time password"
+      },
+      {
+        "command": "totp.new",
+        "title": "Add new one-time password"
+      },
+      {
+        "command": "totp.backup",
+        "title": "Backup seed database"
+      },
+      {
+        "command": "totp.restore",
+        "title": "Restore seed database from backup"
       }
     ],
     "keybindings": {
