@@ -2,6 +2,7 @@ import { ExtensionContext, commands } from "vscode";
 import { totpPick } from "./commands/pick";
 import { Command } from "./commands";
 import { totpNew } from "./commands/new";
+import { totpEdit } from "./commands/edit";
 import { makeStatusBarItem } from "./makeStatusBarItem";
 import { totpBackup } from "./commands/backup";
 import { totpRestore } from "./commands/restore";
@@ -12,6 +13,7 @@ export function activate(context: ExtensionContext) {
     commands.registerCommand(Command.PICK, () => totpPick(context)),
     commands.registerCommand(Command.BACKUP, () => totpBackup(context)),
     commands.registerCommand(Command.RESTORE, () => totpRestore(context)),
+    commands.registerCommand(Command.EDIT, () => totpEdit(context)),
     makeStatusBarItem()
   );
 }

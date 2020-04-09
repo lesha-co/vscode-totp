@@ -29,6 +29,10 @@
       {
         "command": "totp.restore",
         "title": "Restore seed database from backup"
+      },
+      {
+        "command": "totp.edit",
+        "title": "Edit OTP passwords"
       }
     ],
     "keybindings": {
