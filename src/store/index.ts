@@ -1,5 +1,4 @@
 import { getTOTP } from "simple-totp";
-import { data } from "./data";
 export type Code = {
   name: string;
   secret: string;
@@ -24,8 +23,4 @@ export const getInfo = (code: Code) => {
     .toString(10)
     .padStart(2, "0");
   return { code: `${prefix}${totp}`, remaining, name: code.name };
-};
-
-export const addCode = (code: Code) => {
-  data.push(code);
 };

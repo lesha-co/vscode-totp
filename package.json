@@ -22,13 +22,6 @@
     "keybindings": {
       "command": "totp.pick",
       "key": "shift+alt+O"
-    },
-    "menus": {
-      "touchBar": [
-        {
-          "command": "totp.pick"
-        }
-      ]
     }
   },
   "main": "./out/extension.js",
