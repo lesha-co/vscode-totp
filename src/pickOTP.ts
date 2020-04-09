@@ -1,26 +1,32 @@
 import { Code } from "./store/index";
-import * as vsc from "vscode";
+import {
+  window,
+  QuickInputButton,
+  ThemeIcon,
+  QuickPickItem,
+  Disposable,
+} from "vscode";
 
-const addButton: vsc.QuickInputButton = {
-  iconPath: new vsc.ThemeIcon("add"),
+const addButton: QuickInputButton = {
+  iconPath: new ThemeIcon("add"),
   tooltip: "Add new OTP",
 };
 
 type Result<TItem> =
-  | { button: true; data: vsc.QuickInputButton }
+  | { button: true; data: QuickInputButton }
   | { button: false; data: TItem };
 
 export const pickOTPService = async (data: Code[]): Promise<Result<Code>> =>
   await new Promise((resolve, reject) => {
-    const disposables: vsc.Disposable[] = [];
+    const disposables: Disposable[] = [];
     const dispose = () => disposables.forEach((it) => it.dispose());
-    type Item = vsc.QuickPickItem & { code: Code };
+    type Item = QuickPickItem & { code: Code };
     const items: Item[] = data.map((code) => ({
       code: code,
       label: code.name,
     }));
 
-    const qp = vsc.window.createQuickPick<Item>();
+    const qp = window.createQuickPick<Item>();
     disposables.push(qp);
     qp.title = "OTP Generator";
     qp.items = items;
