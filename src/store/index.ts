@@ -10,7 +10,7 @@ export type Code = {
 };
 
 export const getInfo = (code: Code) => {
-  const { totp, remainingSeconds } = getTOTP(
+  const { totp, remainingMs } = getTOTP(
     code.secret,
     code.type,
     undefined,
@@ -19,7 +19,7 @@ export const getInfo = (code: Code) => {
     code.TX
   );
   const prefix = code.prefix || "";
-  const remaining = Math.floor(remainingSeconds / 1000)
+  const remaining = Math.floor(remainingMs / 1000)
     .toString(10)
     .padStart(2, "0");
   return { code: `${prefix}${totp}`, remaining, name: code.name };

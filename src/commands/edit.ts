@@ -41,10 +41,10 @@ export const pickForEdit = async (data: Code[]): Promise<Result<Code>> => {
 };
 export const deleteRoutine = async (context: ExtensionContext, code: Code) => {
   const confirmation = await window.showInputBox({
-    placeHolder: `Please type "${code.name} to confirm deletion"`,
+    placeHolder: `Please type "${code.name}" to confirm deletion`,
     prompt: `Before deleting this account, make sure that you have other means of generating codes for it`,
   });
-  if (confirmation === "yes") {
+  if (confirmation === code.name) {
     deleteCode(context, code.name);
   }
 };

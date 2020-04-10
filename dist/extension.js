@@ -171,13 +171,13 @@ exports.getCode = function (hmac, nDigits) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCounter = function (timestamp, T0, Tx) {
     var adjustedTimestamp = timestamp - T0;
-    var remainingSeconds = Tx - (adjustedTimestamp % Tx);
+    var remainingMs = Tx - (adjustedTimestamp % Tx);
     var counter = Math.floor(adjustedTimestamp / Tx);
     var counterBuffer = Buffer.alloc(8, 0);
     // TODO: use writeBigInt64BE(counter, 0) (requires node v12.something)
     // This can wait until 2038 when 64bit time stamps become necessity
     counterBuffer.writeUInt32BE(counter, 4);
-    return { counterBuffer: counterBuffer, remainingSeconds: remainingSeconds };
+    return { counterBuffer: counterBuffer, remainingMs: remainingMs };
 };
 //# sourceMappingURL=getCounter.js.map
 
@@ -252,10 +252,10 @@ exports.getTOTP = function (seed, encoding, timestamp, nDigits, T0, Tx) {
     if (T0 === void 0) { T0 = 0; }
     if (Tx === void 0) { Tx = 30000; }
     var secret = getKey_1.getKey(seed, encoding);
-    var _a = getCounter_1.getCounter(timestamp, T0, Tx), counterBuffer = _a.counterBuffer, remainingSeconds = _a.remainingSeconds;
+    var _a = getCounter_1.getCounter(timestamp, T0, Tx), counterBuffer = _a.counterBuffer, remainingMs = _a.remainingMs;
     var hmac = getHMAC_1.getHMAC(secret, counterBuffer);
     var totp = getCode_1.getCode(hmac, nDigits);
-    return { totp: totp, remainingSeconds: remainingSeconds };
+    return { totp: totp, remainingMs: remainingMs };
 };
 //# sourceMappingURL=getTOTP.js.map
 
@@ -669,10 +669,10 @@ exports.pickForEdit = (data) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.deleteRoutine = (context, code) => __awaiter(void 0, void 0, void 0, function* () {
     const confirmation = yield vscode_1.window.showInputBox({
-        placeHolder: `Please type "${code.name} to confirm deletion"`,
+        placeHolder: `Please type "${code.name}" to confirm deletion`,
         prompt: `Before deleting this account, make sure that you have other means of generating codes for it`,
     });
-    if (confirmation === "yes") {
+    if (confirmation === code.name) {
         context_1.deleteCode(context, code.name);
     }
 });
@@ -1066,9 +1066,9 @@ exports.decode = (data, passphrase) => {
 Object.defineProperty(exports, "__esModule", { value: true });
 const simple_totp_1 = __webpack_require__(/*! simple-totp */ "./node_modules/simple-totp/dist/index.js");
 exports.getInfo = (code) => {
-    const { totp, remainingSeconds } = simple_totp_1.getTOTP(code.secret, code.type, undefined, code.nDigits, code.T0, code.TX);
+    const { totp, remainingMs } = simple_totp_1.getTOTP(code.secret, code.type, undefined, code.nDigits, code.T0, code.TX);
     const prefix = code.prefix || "";
-    const remaining = Math.floor(remainingSeconds / 1000)
+    const remaining = Math.floor(remainingMs / 1000)
         .toString(10)
         .padStart(2, "0");
     return { code: `${prefix}${totp}`, remaining, name: code.name };

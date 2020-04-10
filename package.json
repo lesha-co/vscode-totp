@@ -1,8 +1,9 @@
 {
-  "name": "vsctotp",
+  "name": "totp",
   "displayName": "totp",
   "description": "",
   "version": "1.0.0",
+  "publisher": "lesha",
   "engines": {
     "vscode": "^1.43.0"
   },
@@ -47,11 +48,15 @@
     "webpack-dev": "webpack --mode development --watch",
     "compile": "tsc -p ./"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lesha-co/vscode-totp.git"
+  },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^10.12.21",
-    "@types/vscode": "^1.43.0",
+    "@types/node": "^10.17.19",
+    "@types/vscode": "^1.44.0",
     "glob": "^7.1.4",
     "mocha": "^6.1.4",
     "ts-loader": "^6.2.2",
@@ -62,6 +67,6 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "simple-totp": "^1.0.3"
+    "simple-totp": "^1.0.5"
   }
 }
