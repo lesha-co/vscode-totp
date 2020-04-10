@@ -1,13 +1,13 @@
 # Change Log
 
-All notable changes to the "vsctotp" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [Unreleased]
 
+- Global state is encrypted, user needs to provide encryption passphrase at the beginning and later, at each extension activation, to decrypt state
+
+## [Version 1]
+
 - Initial release
-
-## [future]
-
-- Encrypt global state
+- Add, rename, delete your TOTP accounts
+- Export and import backups
+- Backups can be encrypted for safety
+- OTP code is copied to clipboard so no one ever sees it.
