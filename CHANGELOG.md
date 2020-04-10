@@ -4,7 +4,7 @@
 
 - Global state is encrypted, user needs to provide encryption passphrase at the beginning and later, at each extension activation, to decrypt state
 
-## [Version 1]
+## [1.0.0]
 
 - Initial release
 - Add, rename, delete your TOTP accounts
