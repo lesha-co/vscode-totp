@@ -3,12 +3,7 @@ import { getCodes } from "../store/context";
 import { pickOTPService } from "../pickOTP";
 import { getInfo } from "../store/index";
 import { Command } from "../commands";
-import {
-  addButton,
-  deleteButton,
-  restoreButton,
-  backupButton,
-} from "../buttons";
+import { addButton, editButton, restoreButton, backupButton } from "../buttons";
 export const totpPick = async (context: ExtensionContext) => {
   try {
     const ctxCodes = getCodes(context);
@@ -20,7 +15,7 @@ export const totpPick = async (context: ExtensionContext) => {
           await commands.executeCommand(Command.NEW);
           break;
         }
-        case deleteButton: {
+        case editButton: {
           await commands.executeCommand(Command.EDIT);
           break;
         }

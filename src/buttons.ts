@@ -5,8 +5,8 @@ export const addButton: QuickInputButton = {
   tooltip: "Add new OTP",
 };
 
-export const deleteButton: QuickInputButton = {
-  iconPath: new ThemeIcon("trash"),
+export const editButton: QuickInputButton = {
+  iconPath: new ThemeIcon("edit"),
   tooltip: "Delete OTP",
 };
 export const backupButton: QuickInputButton = {

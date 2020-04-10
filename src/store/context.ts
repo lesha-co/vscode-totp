@@ -22,6 +22,26 @@ export const addCode = (ctx: ExtensionContext, code: Code) => {
   setCodes(ctx, newKeys);
 };
 
+export const replaceCode = (
+  ctx: ExtensionContext,
+  name: string,
+  newCode: Code
+) => {
+  const allKeys = getCodes(ctx);
+  const newKeys = allKeys.map((key) => {
+    if (key.name === name) {
+      return newCode;
+    }
+    return key;
+  });
+  setCodes(ctx, newKeys);
+};
+export const deleteCode = (ctx: ExtensionContext, name: string) => {
+  const allKeys = getCodes(ctx);
+  const newKeys = allKeys.filter((key) => key.name !== name);
+  setCodes(ctx, newKeys);
+};
+
 export const merge = (ctx: ExtensionContext, data: Code[]) => {
   const ctxCodes = getCodes(ctx);
 
