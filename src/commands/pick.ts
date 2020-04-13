@@ -1,12 +1,12 @@
 import { ExtensionContext, commands, env, window } from "vscode";
-import { getCodes } from "../store/context";
 import { pickOTPService } from "../pickOTP";
 import { getInfo } from "../store/index";
 import { Command } from "../commands";
 import { addButton, editButton, restoreButton, backupButton } from "../buttons";
+import { auto } from "../store/versions/auto";
 export const totpPick = async (context: ExtensionContext) => {
   try {
-    const ctxCodes = getCodes(context);
+    const ctxCodes = await auto.loadFromState(context);
     const result = await pickOTPService(ctxCodes);
 
     if (result.button) {

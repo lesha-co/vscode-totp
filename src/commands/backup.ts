@@ -1,29 +1,10 @@
 import { ExtensionContext, window, workspace } from "vscode";
-import { getCodes, encode } from "../store/context";
-import { Code } from "../store/index";
+import { auto } from "../store/versions/auto";
 
 export const totpBackup = async (context: ExtensionContext) => {
-  const getContent = (passphrase: string, data: Code[]) => {
-    if (passphrase === "") {
-      return JSON.stringify({ cleartext: data });
-    } else {
-      return JSON.stringify({
-        encrypted: encode(JSON.stringify(data), passphrase),
-      });
-    }
-  };
-
   try {
-    const passphrase = await window.showInputBox({
-      prompt: "Enter encryption password",
-      password: true,
-      placeHolder: "Leave this empty if you don't want to encrypt (UNSAFE)",
-    });
-    if (passphrase === undefined) {
-      return;
-    }
-
-    const content = getContent(passphrase, getCodes(context));
+    const codes = await auto.loadFromState(context);
+    const content = await auto.backup(context, codes);
 
     const d = await workspace.openTextDocument({ content });
     window.showTextDocument(d);

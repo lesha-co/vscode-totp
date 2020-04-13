@@ -5,10 +5,11 @@ import {
   Disposable,
   commands,
 } from "vscode";
-import { getCodes, replaceCode, deleteCode } from "../store/context";
+import { replaceCode, deleteCode } from "../store/context";
 import { Result } from "../pickOTP";
 import { Code } from "../store/index";
 import { Command } from "../commands";
+import { auto } from "../store/versions/auto";
 
 export const pickForEdit = async (data: Code[]): Promise<Result<Code>> => {
   return await new Promise((resolve, reject) => {
@@ -60,7 +61,7 @@ export const renameRoutine = async (context: ExtensionContext, code: Code) => {
 };
 export const totpEdit = async (context: ExtensionContext) => {
   try {
-    const data = getCodes(context);
+    const data = await auto.loadFromState(context);
     const entry = await pickForEdit(data);
     if (entry.button) {
       return;
