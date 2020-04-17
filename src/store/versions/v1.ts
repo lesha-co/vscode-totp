@@ -18,13 +18,14 @@ export const persistV1: Persist = {
     if (passphrase === undefined) {
       throw new Error("passphrase dialog aborted");
     }
-    if (passphrase === "") {
-      return JSON.stringify({ cleartext: data });
-    } else {
-      return JSON.stringify({
-        encrypted: encode(JSON.stringify(data), passphrase),
-      });
-    }
+    const value =
+      passphrase === ""
+        ? { cleartext: data }
+        : {
+            encrypted: encode(JSON.stringify(data), passphrase),
+          };
+    const json = JSON.stringify(value, null, 2);
+    return json;
   },
   async restore(ctx, backupData) {
     let passphrase;
