@@ -1,24 +1,29 @@
 import { Persist, STORE_VER_KEY } from "../context";
 import { persistV1 } from "./v1";
-const latest = persistV1;
+import { persistV2 } from "./v2";
+const latest = persistV2;
 export const auto: Persist = {
   storeInState: latest.storeInState,
   backup: latest.backup,
+  clear: latest.clear,
   async loadFromState(ctx) {
     const v = ctx.globalState.get(STORE_VER_KEY);
     switch (v) {
+      case 2:
+        return await persistV2.loadFromState(ctx);
       case 1:
-        return persistV1.loadFromState(ctx);
       default:
-        throw new Error("unknown version");
+        return await persistV1.loadFromState(ctx);
     }
   },
-  async restore(ctx, backupData) {
+  async restore(ctx, backupData, passphraseGetter) {
     const v = JSON.parse(backupData)[STORE_VER_KEY];
     switch (v) {
+      case 2:
+        return await persistV2.restore(ctx, backupData, passphraseGetter);
       case 1:
       default:
-        return persistV1.restore(ctx, backupData);
+        return await persistV1.restore(ctx, backupData, passphraseGetter);
     }
   },
 };

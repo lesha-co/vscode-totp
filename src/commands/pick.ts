@@ -31,7 +31,7 @@ export const totpPick = async (context: ExtensionContext) => {
     } else {
       const info = getInfo(result.data);
       env.clipboard.writeText(info.code);
-      window.showInformationMessage("Password copied to clipboard");
+      window.showInformationMessage("Passphrase copied to clipboard");
     }
   } catch (x) {
     // debugger;

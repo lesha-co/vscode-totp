@@ -3,5 +3,6 @@ export enum Command {
   BACKUP = "totp.backup",
   RESTORE = "totp.restore",
   EDIT = "totp.edit",
+  CLEAR = "totp.clear",
   NEW = "totp.new",
 }

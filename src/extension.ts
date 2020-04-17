@@ -6,6 +6,7 @@ import { totpEdit } from "./commands/edit";
 import { makeStatusBarItem } from "./makeStatusBarItem";
 import { totpBackup } from "./commands/backup";
 import { totpRestore } from "./commands/restore";
+import { totpClear } from "./commands/clear";
 
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(
@@ -14,6 +15,7 @@ export function activate(context: ExtensionContext) {
     commands.registerCommand(Command.BACKUP, () => totpBackup(context)),
     commands.registerCommand(Command.RESTORE, () => totpRestore(context)),
     commands.registerCommand(Command.EDIT, () => totpEdit(context)),
+    commands.registerCommand(Command.CLEAR, () => totpClear(context)),
     makeStatusBarItem()
   );
 }

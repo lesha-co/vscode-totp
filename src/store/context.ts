@@ -2,11 +2,21 @@ import { Code } from "./index";
 import { ExtensionContext } from "vscode";
 import { auto } from "./versions/auto";
 export const STORE_VER_KEY = "STORE_VER";
+export type PassphraseGetter = () => Promise<string | null>;
 export interface Persist {
   storeInState(ctx: ExtensionContext, codes: Code[]): Promise<void>;
   loadFromState(ctx: ExtensionContext): Promise<Code[]>;
-  backup(ctx: ExtensionContext, codes: Code[]): Promise<string>;
-  restore(ctx: ExtensionContext, backupData: string): Promise<Code[]>;
+  backup(
+    ctx: ExtensionContext,
+    codes: Code[],
+    passphrase: string
+  ): Promise<string>;
+  restore(
+    ctx: ExtensionContext,
+    backupData: string,
+    passphraseGetter: PassphraseGetter
+  ): Promise<Code[]>;
+  clear(ctx: ExtensionContext): Promise<void>;
 }
 
 export const addCode = async (ctx: ExtensionContext, code: Code) => {
@@ -36,7 +46,7 @@ export const deleteCode = async (ctx: ExtensionContext, name: string) => {
 };
 
 export const merge = async (ctx: ExtensionContext, data: Code[]) => {
-  const ctxCodes = await auto.loadFromState(ctx);
+  const ctxCodes = (await auto.loadFromState(ctx)) || [];
 
   data.forEach((code) => {
     const c = ctxCodes.find(

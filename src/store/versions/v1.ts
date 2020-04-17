@@ -1,6 +1,5 @@
 import { Persist, STORE_VER_KEY } from "../context";
 import { Code } from "../index";
-import { askForEncryptionPassword } from "../askForEncryptionPassword";
 import { window } from "vscode";
 import { encode, decode } from "../crypto";
 const KEY = "TOTP";
@@ -10,14 +9,13 @@ export const persistV1: Persist = {
     ctx.globalState.update(KEY, codes);
     ctx.globalState.update(STORE_VER_KEY, STORE_VER);
   },
+
   async loadFromState(ctx) {
-    return ctx.globalState.get<Code[]>(KEY, []);
+    const value = ctx.globalState.get<Code[] | null>(KEY, null);
+    return value === null ? [] : value;
   },
-  async backup(ctx, data) {
-    const passphrase = await askForEncryptionPassword();
-    if (passphrase === undefined) {
-      throw new Error("passphrase dialog aborted");
-    }
+
+  async backup(ctx, data, passphrase) {
     const value =
       passphrase === ""
         ? { cleartext: data }
@@ -27,7 +25,8 @@ export const persistV1: Persist = {
     const json = JSON.stringify(value, null, 2);
     return json;
   },
-  async restore(ctx, backupData) {
+
+  async restore(ctx, backupData, passphraseGetter) {
     let passphrase;
     const { cleartext, encrypted } = JSON.parse(backupData);
     const codes: Code[] = [];
@@ -35,10 +34,7 @@ export const persistV1: Persist = {
       codes.push(...cleartext);
     }
     if (encrypted !== undefined) {
-      passphrase = await window.showInputBox({
-        prompt: "Enter password used for encryption",
-        password: true,
-      });
+      passphrase = await passphraseGetter();
       if (!passphrase) {
         throw new Error("No passphrase was supplied");
       }
@@ -46,5 +42,9 @@ export const persistV1: Persist = {
     }
 
     return codes;
+  },
+  async clear(ctx): Promise<void> {
+    ctx.globalState.update(KEY, null);
+    ctx.globalState.update(STORE_VER_KEY, null);
   },
 };

@@ -57,7 +57,7 @@ export const renameRoutine = async (context: ExtensionContext, code: Code) => {
   if (newName === undefined) {
     return;
   }
-  replaceCode(context, code.name, { ...code, name: newName });
+  await replaceCode(context, code.name, { ...code, name: newName });
 };
 export const totpEdit = async (context: ExtensionContext) => {
   try {

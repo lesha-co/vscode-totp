@@ -34,6 +34,10 @@
       {
         "command": "totp.edit",
         "title": "Edit OTP passwords"
+      },
+      {
+        "command": "totp.clear",
+        "title": "Clear seed database"
       }
     ],
     "keybindings": {
