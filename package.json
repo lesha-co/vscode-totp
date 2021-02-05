@@ -37,7 +37,7 @@
       },
       {
         "command": "totp.clear",
-        "title": "Clear seed database"
+        "title": "Purge all codes"
       }
     ],
     "keybindings": {

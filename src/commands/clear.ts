@@ -4,9 +4,11 @@ import { auto } from "../store/versions/auto";
 
 export const totpClear = async (context: ExtensionContext) => {
   try {
-    const YES = { label: "Confirm" };
+    const YES = { label: "♻️ CONFIRM PURGE ♻️" };
 
-    const items = new Array(10).map((x) => ({ label: "---" }));
+    const items = new Array(10)
+      .fill(0)
+      .map((x) => ({ label: "❌ ABORT PURGE ❌" }));
     const index = Math.round(Math.random() * 8) + 1;
     items[index] = YES;
     const result = await window.showQuickPick(items);
@@ -15,6 +17,6 @@ export const totpClear = async (context: ExtensionContext) => {
       await auto.clear(context);
     }
   } catch (x) {
-    // debugger;
+    window.showInformationMessage(x.message);
   }
 };
