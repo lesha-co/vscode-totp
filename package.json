@@ -63,12 +63,12 @@
     "@types/vscode": "^1.44.0",
     "glob": "^7.1.4",
     "mocha": "^6.1.4",
-    "ts-loader": "^6.2.2",
+    "ts-loader": "^9.4.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
     "vscode-test": "^1.2.0",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "simple-totp": "^1.0.5"
