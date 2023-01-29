@@ -15,9 +15,12 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-      - name: VSCE login
+      - name: Extension packaging
+        run: |
+          npx vsce package
+      - name: Logging in to vsce
         run: |
           echo "${{ secrets.AZURE_TOKEN }}" | npx vsce login ${{ secrets.AZURE_LOGIN }}
-      - name: VSCE publish
+      - name: Publish
         run: |
           npx vsce publish
