@@ -2,7 +2,7 @@
   "name": "totp",
   "displayName": "totp",
   "description": "",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "publisher": "lesha",
   "engines": {
     "vscode": "^1.44.0"
