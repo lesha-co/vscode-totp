@@ -66,6 +66,7 @@
     "ts-loader": "^6.2.2",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
+    "vsce": "^2.15.0",
     "vscode-test": "^1.2.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
