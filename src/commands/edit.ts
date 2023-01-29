@@ -44,9 +44,13 @@ export const deleteRoutine = async (context: ExtensionContext, code: Code) => {
   const confirmation = await window.showInputBox({
     placeHolder: `Please type "${code.name}" to confirm deletion`,
     prompt: `Before deleting this account, make sure that you have other means of generating codes for it`,
+    validateInput: (value) => {
+      if (value === code.name) return null;
+      return `Please type "${code.name}" to confirm deletion`;
+    },
   });
   if (confirmation === code.name) {
-    deleteCode(context, code.name);
+    await deleteCode(context, code.name);
   }
 };
 export const renameRoutine = async (context: ExtensionContext, code: Code) => {

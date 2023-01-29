@@ -10,6 +10,7 @@ export const makePasswordCache: () => PassphraseGetter = () => {
 
     const input = await window.showInputBox({
       prompt: "Enter passphrase to unlock OTP storage",
+      password: true,
     });
 
     if (input) {
