@@ -17,8 +17,7 @@ jobs:
           npm ci
       - name: VSCE login
         run: |
-          # it's a test, this key is no longer valid
-          echo 5dtaoga3qd2yhgwduxliaawp2mu56syg4ytbhy6qfedrv2xqexsa | npx vsce login lesha
+          echo "${{ secrets.AZURE_TOKEN }}" | npx vsce login ${{ secrets.AZURE_LOGIN }}
       - name: VSCE publish
         run: |
           npx vsce publish
