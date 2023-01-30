@@ -2,7 +2,7 @@
   "name": "totp",
   "displayName": "OTP Generator",
   "description": "Generate OTP easily ",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "publisher": "lesha",
   "engines": {
     "vscode": "^1.44.0"
