@@ -1,7 +1,7 @@
 {
   "name": "totp",
-  "displayName": "totp",
-  "description": "",
+  "displayName": "OTP Generator",
+  "description": "Generate OTP easily ",
   "version": "2.3.1",
   "publisher": "lesha",
   "engines": {
