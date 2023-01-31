@@ -17,6 +17,6 @@ export const totpClear = async (context: ExtensionContext) => {
       await auto.clear(context);
     }
   } catch (x) {
-    window.showInformationMessage(x.message);
+    window.showInformationMessage((x as Error).message);
   }
 };

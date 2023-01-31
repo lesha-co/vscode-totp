@@ -9,6 +9,7 @@ import { totpRestore } from "./commands/restore";
 import { totpClear } from "./commands/clear";
 
 export function activate(context: ExtensionContext) {
+  console.log("Activated.");
   context.subscriptions.push(
     commands.registerCommand(Command.NEW, () => totpNew(context)),
     commands.registerCommand(Command.PICK, () => totpPick(context)),

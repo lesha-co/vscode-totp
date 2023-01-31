@@ -1,9 +1,9 @@
-import { getTOTP } from "simple-totp";
+import { getTOTP, SupportedEncodings } from "simple-totp";
 export type Code = {
   name: string;
   secret: string;
   prefix?: string;
-  type: BufferEncoding | "base32";
+  type: SupportedEncodings;
   T0: number;
   TX: number;
   nDigits: number;

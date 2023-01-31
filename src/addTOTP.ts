@@ -1,5 +1,5 @@
 import { QuickPickItem, ExtensionContext, window } from "vscode";
-import { base32decode } from "simple-totp";
+import { to_u8a, from_u8a } from "simple-totp";
 import { Code } from "./store/index";
 
 enum AdditionalEncodings {
@@ -9,7 +9,7 @@ enum AdditionalEncodings {
 
 interface State {
   encoding: BufferEncoding | AdditionalEncodings;
-  key: Buffer;
+  key: Uint8Array;
   T0: number;
   TX: number;
   nDigits: number;
@@ -168,10 +168,10 @@ const askForCode = async (state: Partial<State>): Promise<Partial<State>> => {
     }
   };
 
-  const decode = (v: string) => {
+  const decode = (v: string): Uint8Array => {
     switch (state.encoding) {
       case AdditionalEncodings.BASE_32:
-        return base32decode(v.toUpperCase());
+        return to_u8a("base32", v.toUpperCase());
       case AdditionalEncodings.OTPAUTH_URI:
         throw new Error("No decoder");
       case "hex":
@@ -204,7 +204,7 @@ const askForCode = async (state: Partial<State>): Promise<Partial<State>> => {
       try {
         decode(v);
       } catch (error) {
-        return error.message;
+        return (error as Error).message;
       }
     },
   });
@@ -232,7 +232,7 @@ export async function addTOTP(context: ExtensionContext) {
   const state = await collectInputs();
   const code: Code = {
     name: state.name,
-    secret: state.key.toString("hex"),
+    secret: from_u8a(state.key, "hex"),
     type: "hex",
     prefix: state.prefix,
     T0: state.T0,
