@@ -6,7 +6,7 @@ import {
   commands,
 } from "vscode";
 import { replaceCode, deleteCode } from "../store/context";
-import { Result } from "../pickOTP";
+import { Result } from "./pick";
 import { Code } from "../store/index";
 import { Command } from "../commands";
 import { auto } from "../store/versions/auto";

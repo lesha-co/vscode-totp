@@ -1,4 +1,4 @@
-import { ExtensionContext, window, StatusBarAlignment } from "vscode";
+import { window, StatusBarAlignment } from "vscode";
 import { Command } from "./commands";
 export const makeStatusBarItem = () => {
   const myStatusBarItem = window.createStatusBarItem(
