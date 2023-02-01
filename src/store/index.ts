@@ -1,11 +1,11 @@
-import { getTOTP } from "simple-totp";
+import { getTOTP, SupportedEncodings } from "simple-totp";
 export type Code = {
   name: string;
   secret: string;
   prefix?: string;
-  type: BufferEncoding | "base32";
-  T0: number;
-  TX: number;
+  type: SupportedEncodings | "base32";
+  t0: number;
+  tx: number;
   nDigits: number;
 };
 
@@ -15,8 +15,8 @@ export const getInfo = (code: Code) => {
     code.type,
     undefined,
     code.nDigits,
-    code.T0,
-    code.TX
+    code.t0,
+    code.tx
   );
   const prefix = code.prefix || "";
   const remaining = Math.floor(remainingMs / 1000)

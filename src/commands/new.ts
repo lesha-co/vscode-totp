@@ -1,18 +1,18 @@
 import { QuickPickItem, ExtensionContext, window } from "vscode";
-import { base32decode } from "simple-totp";
 import { Code } from "../store/index";
 import { addCode } from "../store/context";
+import { base32_to_u8a, u8a_to_hex } from "simple-totp/dist/converters";
 
 enum AdditionalEncodings {
-  BASE_32 = "base32",
-  OTPAUTH_URI = "otpauth:// TOTP key",
+  base32 = "base32",
+  otpAuthURI = "otpauth:// TOTP key",
 }
 
 interface State {
   encoding: BufferEncoding | AdditionalEncodings;
-  key: Buffer;
-  T0: number;
-  TX: number;
+  key: Uint8Array;
+  t0: number;
+  tx: number;
   nDigits: number;
   prefix: string;
   name: string;
@@ -24,10 +24,10 @@ type PartialStateResolver = (
 ) => Promise<Partial<State>> | Partial<State>;
 
 const isFullState = (s: Partial<State>): s is State => {
-  if (s.T0 === undefined) {
+  if (s.t0 === undefined) {
     return false;
   }
-  if (s.TX === undefined) {
+  if (s.tx === undefined) {
     return false;
   }
   if (s.encoding === undefined) {
@@ -58,7 +58,7 @@ const findNextStep = (s: Partial<State>): PartialStateResolver | null => {
   if (s.key === undefined) {
     return askForCode;
   }
-  if (s.T0 === undefined || s.TX === undefined || s.nDigits === undefined) {
+  if (s.t0 === undefined || s.tx === undefined || s.nDigits === undefined) {
     if (s.needCustomParams === true) {
       return askForCustomParams;
     }
@@ -77,10 +77,10 @@ const askForEncoding = async (
   state: Partial<State>
 ): Promise<Partial<State>> => {
   const encodings = [
-    { label: AdditionalEncodings.BASE_32 },
+    { label: AdditionalEncodings.base32 },
     { label: "hex" },
     { label: "ascii" },
-    { label: AdditionalEncodings.OTPAUTH_URI },
+    { label: AdditionalEncodings.otpAuthURI },
   ];
   const pick = await window.showQuickPick(encodings, {
     placeHolder: "Which encoding does your seed have",
@@ -112,7 +112,7 @@ const askForParameters = async (
     return state;
   }
   if (pick.id === defaultParams) {
-    return { ...state, T0: 0, TX: 30, nDigits: 6, needCustomParams: false };
+    return { ...state, t0: 0, tx: 30, nDigits: 6, needCustomParams: false };
   }
   return { ...state, needCustomParams: true };
 };
@@ -156,24 +156,24 @@ const askForCustomParams = async (
 
   return {
     ...state,
-    T0: _T0 ? parseInt(_T0, 10) : undefined,
-    TX: _TX ? parseInt(_TX, 10) : undefined,
+    t0: _T0 ? parseInt(_T0, 10) : undefined,
+    tx: _TX ? parseInt(_TX, 10) : undefined,
     nDigits: _nDigits ? parseInt(_nDigits, 10) : undefined,
   };
 };
 
 const askForCode = async (state: Partial<State>): Promise<Partial<State>> => {
   const getPlaceholder = () => {
-    if (state.encoding === AdditionalEncodings.OTPAUTH_URI) {
+    if (state.encoding === AdditionalEncodings.otpAuthURI) {
       return "otpauth://";
     }
   };
 
-  const decode = (v: string) => {
+  const decode = (v: string): Uint8Array => {
     switch (state.encoding) {
-      case AdditionalEncodings.BASE_32:
-        return base32decode(v.toUpperCase());
-      case AdditionalEncodings.OTPAUTH_URI:
+      case AdditionalEncodings.base32:
+        return base32_to_u8a(v.toUpperCase());
+      case AdditionalEncodings.otpAuthURI:
         throw new Error("No decoder");
       case "hex":
         const allCharacters = /^[0-9a-h]+$/i.test(v);
@@ -205,7 +205,7 @@ const askForCode = async (state: Partial<State>): Promise<Partial<State>> => {
       try {
         decode(v);
       } catch (error) {
-        return error.message;
+        return (error as Error).message;
       }
     },
   });
@@ -233,12 +233,12 @@ export async function addTOTP(context: ExtensionContext) {
   const state = await collectInputs();
   const code: Code = {
     name: state.name,
-    secret: state.key.toString("hex"),
+    secret: u8a_to_hex(state.key),
     type: "hex",
     prefix: state.prefix,
-    T0: state.T0,
+    t0: state.t0,
     // state.TX is in seconds, Code['TX'] is in milliseconds
-    TX: state.TX * 1000,
+    tx: state.tx * 1000,
     nDigits: state.nDigits,
   };
   window.showInformationMessage(`Creating Application Service '${state.name}'`);

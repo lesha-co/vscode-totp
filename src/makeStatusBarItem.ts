@@ -8,6 +8,6 @@ export const makeStatusBarItem = () => {
 
   myStatusBarItem.show();
   myStatusBarItem.text = "$(key)";
-  myStatusBarItem.command = Command.PICK;
+  myStatusBarItem.command = Command.pick;
   return myStatusBarItem;
 };

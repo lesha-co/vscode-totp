@@ -59,19 +59,19 @@ export const totpPick = async (context: ExtensionContext) => {
     if (result.button) {
       switch (result.data) {
         case addButton: {
-          await commands.executeCommand(Command.NEW);
+          await commands.executeCommand(Command.new);
           break;
         }
         case editButton: {
-          await commands.executeCommand(Command.EDIT);
+          await commands.executeCommand(Command.edit);
           break;
         }
         case restoreButton: {
-          await commands.executeCommand(Command.RESTORE);
+          await commands.executeCommand(Command.restore);
           break;
         }
         case backupButton: {
-          await commands.executeCommand(Command.BACKUP);
+          await commands.executeCommand(Command.backup);
           break;
         }
       }

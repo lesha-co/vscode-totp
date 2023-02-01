@@ -45,7 +45,9 @@ export const deleteRoutine = async (context: ExtensionContext, code: Code) => {
     placeHolder: `Please type "${code.name}" to confirm deletion`,
     prompt: `Before deleting this account, make sure that you have other means of generating codes for it`,
     validateInput: (value) => {
-      if (value === code.name) return null;
+      if (value === code.name) {
+        return null;
+      }
       return `Please type "${code.name}" to confirm deletion`;
     },
   });
@@ -84,7 +86,7 @@ export const totpEdit = async (context: ExtensionContext) => {
       await deleteRoutine(context, code);
     }
 
-    await commands.executeCommand(Command.PICK);
+    await commands.executeCommand(Command.pick);
   } catch (x) {
     // debugger;
   }

@@ -34,7 +34,7 @@ export const totpRestore = async (context: ExtensionContext) => {
     }
   } catch (x) {
     window.showErrorMessage(
-      `An error occured during decryption: \n${x.message}`
+      `An error occured during decryption: \n${(x as Error).message}`
     );
   }
 };
