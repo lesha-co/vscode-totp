@@ -1,9 +1,9 @@
-import { ExtensionContext, window, workspace } from "vscode";
-import { merge, Persist, PassphraseGetter } from "../store/context";
-
+import { ExtensionContext, workspace } from "vscode";
+import { merge, PassphraseGetter } from "../store/context";
+import * as ui from "../ui";
 import { auto } from "../store/versions/auto";
 const passphraseGetter: PassphraseGetter = async () => {
-  const passphrase = await window.showInputBox({
+  const passphrase = await ui.showInputBox({
     prompt: "Enter passphrase used for encryption",
     password: true,
   });
@@ -14,7 +14,7 @@ const passphraseGetter: PassphraseGetter = async () => {
 };
 export const totpRestore = async (context: ExtensionContext) => {
   try {
-    const uri = await window.showOpenDialog({
+    const uri = await ui.showOpenDialog({
       openLabel: "Restore seeds",
       canSelectMany: false,
       canSelectFiles: true,
@@ -28,12 +28,12 @@ export const totpRestore = async (context: ExtensionContext) => {
 
     if (codes.length !== 0) {
       await merge(context, codes);
-      window.showInformationMessage(
+      ui.showInformationMessage(
         `${codes.length} passphrases have been imported`
       );
     }
   } catch (x) {
-    window.showErrorMessage(
+    ui.showErrorMessage(
       `An error occured during decryption: \n${(x as Error).message}`
     );
   }

@@ -1,6 +1,5 @@
 import { PassphraseGetter } from "./context";
-import { window } from "vscode";
-
+import * as ui from "../ui";
 export const makePasswordCache: () => PassphraseGetter = () => {
   let passphrase: string | null = null;
   return async () => {
@@ -8,7 +7,7 @@ export const makePasswordCache: () => PassphraseGetter = () => {
       return passphrase;
     }
 
-    const input = await window.showInputBox({
+    const input = await ui.showInputBox({
       prompt: "Enter passphrase to unlock OTP storage",
       password: true,
     });

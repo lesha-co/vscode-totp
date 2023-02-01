@@ -5,9 +5,8 @@ import {
   ExtensionContext,
   commands,
   env,
-  window,
 } from "vscode";
-
+import * as ui from "../ui";
 import { getInfo } from "../store/index";
 import { Command } from "../commands";
 import { auto } from "../store/versions/auto";
@@ -28,7 +27,7 @@ export const pickOTPService = async (data: Code[]): Promise<Result<Code>> =>
       label: code.name,
     }));
 
-    const qp = window.createQuickPick<Item>();
+    const qp = ui.createQuickPick<Item>();
     disposables.push(qp);
     qp.title = "OTP Generator";
     qp.items = items;
@@ -78,7 +77,7 @@ export const totpPick = async (context: ExtensionContext) => {
     } else {
       const info = getInfo(result.data);
       env.clipboard.writeText(info.code);
-      window.showInformationMessage("Passphrase copied to clipboard");
+      ui.showInformationMessage("Passphrase copied to clipboard");
     }
   } catch (x) {
     // debugger;

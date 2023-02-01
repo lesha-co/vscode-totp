@@ -1,6 +1,5 @@
 import { Persist, STORE_VER_KEY } from "../context";
 import { Code } from "../index";
-import { window } from "vscode";
 import { encode, decode } from "../crypto";
 const KEY = "TOTP";
 const STORE_VER = 1;

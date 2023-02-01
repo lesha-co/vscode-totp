@@ -1,5 +1,5 @@
 import { Persist, STORE_VER_KEY } from "../context";
-import { window } from "vscode";
+import * as ui from "../../ui";
 import { persistV1 } from "./v1";
 import { makePasswordCache } from "../passphraseGetter";
 const KEY = "TOTP";
@@ -9,7 +9,7 @@ export const persistV2: Persist = {
   async storeInState(ctx, codes) {
     const passphrase = await passphraseGetter();
     if (passphrase === null) {
-      await window.showErrorMessage("Can't update storage");
+      await ui.showErrorMessage("Can't update storage");
       return;
     }
     ctx.globalState.update(KEY, await this.backup(ctx, codes, passphrase));

@@ -1,8 +1,8 @@
-import { QuickPickItem, ExtensionContext, window } from "vscode";
+import { QuickPickItem, ExtensionContext } from "vscode";
 import { Code } from "../store/index";
 import { addCode } from "../store/context";
 import { base32_to_u8a, u8a_to_hex } from "simple-totp/dist/converters";
-
+import * as ui from "../ui";
 enum AdditionalEncodings {
   base32 = "base32",
   otpAuthURI = "otpauth:// TOTP key",
@@ -82,7 +82,7 @@ const askForEncoding = async (
     { label: "ascii" },
     { label: AdditionalEncodings.otpAuthURI },
   ];
-  const pick = await window.showQuickPick(encodings, {
+  const pick = await ui.showQuickPick(encodings, {
     placeHolder: "Which encoding does your seed have",
   });
   return { ...state, encoding: pick?.label as State["encoding"] | undefined };
@@ -104,7 +104,7 @@ const askForParameters = async (
     { label: "Custom parameters...", id: customParams },
   ];
 
-  const pick = await window.showQuickPick(items, {
+  const pick = await ui.showQuickPick(items, {
     placeHolder: "Optional parameters",
   });
 
@@ -118,7 +118,7 @@ const askForParameters = async (
 };
 
 const askForName = async (state: Partial<State>): Promise<Partial<State>> => {
-  const name = await window.showInputBox({
+  const name = await ui.showInputBox({
     prompt: "Name of token",
     placeHolder: "Name of token",
     ignoreFocusOut: true,
@@ -127,7 +127,7 @@ const askForName = async (state: Partial<State>): Promise<Partial<State>> => {
 };
 
 const askForPrefix = async (state: Partial<State>): Promise<Partial<State>> => {
-  const prefix = await window.showInputBox({
+  const prefix = await ui.showInputBox({
     prompt: "prefix of token",
     placeHolder: "prefix",
     ignoreFocusOut: true,
@@ -138,17 +138,17 @@ const askForPrefix = async (state: Partial<State>): Promise<Partial<State>> => {
 const askForCustomParams = async (
   state: Partial<State>
 ): Promise<Partial<State>> => {
-  const _T0 = await window.showInputBox({
+  const _T0 = await ui.showInputBox({
     placeHolder: "Initial timestamp",
     value: "0",
     ignoreFocusOut: true,
   });
-  const _TX = await window.showInputBox({
+  const _TX = await ui.showInputBox({
     placeHolder: "Interval length (seconds)",
     value: "30",
     ignoreFocusOut: true,
   });
-  const _nDigits = await window.showInputBox({
+  const _nDigits = await ui.showInputBox({
     placeHolder: "Interval length (seconds)",
     value: "6",
     ignoreFocusOut: true,
@@ -197,7 +197,7 @@ const askForCode = async (state: Partial<State>): Promise<Partial<State>> => {
         throw new Error("Encoding is undefined");
     }
   };
-  const key = await window.showInputBox({
+  const key = await ui.showInputBox({
     prompt: "Paste your code",
     placeHolder: getPlaceholder(),
     ignoreFocusOut: true,
@@ -241,7 +241,7 @@ export async function addTOTP(context: ExtensionContext) {
     tx: state.tx * 1000,
     nDigits: state.nDigits,
   };
-  window.showInformationMessage(`Creating Application Service '${state.name}'`);
+  ui.showInformationMessage(`Creating Application Service '${state.name}'`);
   return code;
 }
 

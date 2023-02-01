@@ -1,10 +1,8 @@
-import { window, StatusBarAlignment } from "vscode";
+import { StatusBarAlignment } from "vscode";
 import { Command } from "./commands";
+import * as ui from "./ui";
 export const makeStatusBarItem = () => {
-  const myStatusBarItem = window.createStatusBarItem(
-    StatusBarAlignment.Right,
-    100
-  );
+  const myStatusBarItem = ui.createStatusBarItem(StatusBarAlignment.Right, 100);
 
   myStatusBarItem.show();
   myStatusBarItem.text = "$(key)";

@@ -1,10 +1,5 @@
-import {
-  ExtensionContext,
-  window,
-  QuickPickItem,
-  Disposable,
-  commands,
-} from "vscode";
+import { ExtensionContext, QuickPickItem, Disposable, commands } from "vscode";
+import * as ui from "../ui";
 import { replaceCode, deleteCode } from "../store/context";
 import { Result } from "./pick";
 import { Code } from "../store/index";
@@ -21,7 +16,7 @@ export const pickForEdit = async (data: Code[]): Promise<Result<Code>> => {
       label: code.name,
     }));
 
-    const qp = window.createQuickPick<Item>();
+    const qp = ui.createQuickPick<Item>();
     disposables.push(qp);
     qp.title = "Select item to edit";
     qp.items = items;
@@ -41,7 +36,7 @@ export const pickForEdit = async (data: Code[]): Promise<Result<Code>> => {
   });
 };
 export const deleteRoutine = async (context: ExtensionContext, code: Code) => {
-  const confirmation = await window.showInputBox({
+  const confirmation = await ui.showInputBox({
     placeHolder: `Please type "${code.name}" to confirm deletion`,
     prompt: `Before deleting this account, make sure that you have other means of generating codes for it`,
     validateInput: (value) => {
@@ -56,7 +51,7 @@ export const deleteRoutine = async (context: ExtensionContext, code: Code) => {
   }
 };
 export const renameRoutine = async (context: ExtensionContext, code: Code) => {
-  const newName = await window.showInputBox({
+  const newName = await ui.showInputBox({
     prompt: `Enter new name for ${code.name}`,
     value: code.name,
   });
@@ -75,7 +70,7 @@ export const totpEdit = async (context: ExtensionContext) => {
     const code = entry.data;
     const RENAME = { label: "Rename" };
     const DELETE = { label: "Delete" };
-    const result = await window.showQuickPick([RENAME, DELETE]);
+    const result = await ui.showQuickPick([RENAME, DELETE]);
     if (!result) {
       return;
     }
