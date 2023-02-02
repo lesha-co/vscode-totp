@@ -25,7 +25,7 @@ export const persistV1: Persist = {
     return json;
   },
 
-  async restore(ctx, backupData, passphraseGetter) {
+  async restore(backupData, passphraseGetter) {
     let passphrase;
     const { cleartext, encrypted } = JSON.parse(backupData);
     const codes: Code[] = [];
@@ -33,7 +33,7 @@ export const persistV1: Persist = {
       codes.push(...cleartext);
     }
     if (encrypted !== undefined) {
-      passphrase = await passphraseGetter();
+      passphrase = await passphraseGetter.get();
       if (!passphrase) {
         throw new Error("No passphrase was supplied");
       }

@@ -1,8 +1,8 @@
 import { Code } from "./index";
 import { ExtensionContext } from "vscode";
 import { auto } from "./versions/auto";
+import { PassphraseGetterClass } from "./passphraseGetter";
 export const STORE_VER_KEY = "STORE_VER";
-export type PassphraseGetter = () => Promise<string | null>;
 export interface Persist {
   storeInState(ctx: ExtensionContext, codes: Code[]): Promise<void>;
   loadFromState(ctx: ExtensionContext): Promise<Code[]>;
@@ -12,9 +12,8 @@ export interface Persist {
     passphrase: string
   ): Promise<string>;
   restore(
-    ctx: ExtensionContext,
     backupData: string,
-    passphraseGetter: PassphraseGetter
+    passphraseGetter: PassphraseGetterClass
   ): Promise<Code[]>;
   clear(ctx: ExtensionContext): Promise<void>;
 }

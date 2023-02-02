@@ -16,14 +16,14 @@ export const auto: Persist = {
         return await persistV1.loadFromState(ctx);
     }
   },
-  async restore(ctx, backupData, passphraseGetter) {
+  async restore(backupData, passphraseGetter) {
     const v = JSON.parse(backupData)[STORE_VER_KEY];
     switch (v) {
       case 2:
-        return await persistV2.restore(ctx, backupData, passphraseGetter);
+        return await persistV2.restore(backupData, passphraseGetter);
       case 1:
       default:
-        return await persistV1.restore(ctx, backupData, passphraseGetter);
+        return await persistV1.restore(backupData, passphraseGetter);
     }
   },
 };

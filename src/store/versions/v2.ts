@@ -1,14 +1,13 @@
 import { Persist, STORE_VER_KEY } from "../context";
 import { sideEffects } from "../../external";
 import { persistV1 } from "./v1";
-import { makePasswordCache } from "../passphraseGetter";
+import { otpPasswordGetter } from "../passphraseGetter";
 const KEY = "TOTP";
 const STORE_VER = 2;
-const passphraseGetter = makePasswordCache();
 export const persistV2: Persist = {
   async storeInState(ctx, codes) {
-    const passphrase = await passphraseGetter();
-    if (passphrase === null) {
+    const passphrase = await otpPasswordGetter.get();
+    if (passphrase === undefined) {
       await sideEffects.showErrorMessage("Can't update storage");
       return;
     }
@@ -18,7 +17,7 @@ export const persistV2: Persist = {
 
   async loadFromState(ctx) {
     const backupData = ctx.globalState.get<string>(KEY, "{}");
-    const data = await this.restore(ctx, backupData, passphraseGetter);
+    const data = await this.restore(backupData, otpPasswordGetter);
     return data;
   },
 
