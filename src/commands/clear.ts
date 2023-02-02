@@ -1,5 +1,5 @@
 import { ExtensionContext } from "vscode";
-import * as ui from "../ui";
+import { sideEffects } from "../external";
 import { auto } from "../store/versions/auto";
 
 export const totpClear = async (context: ExtensionContext) => {
@@ -11,12 +11,12 @@ export const totpClear = async (context: ExtensionContext) => {
       .map((x) => ({ label: "❌ ABORT PURGE ❌" }));
     const index = Math.round(Math.random() * 8) + 1;
     items[index] = YES;
-    const result = await ui.showQuickPick(items);
+    const result = await sideEffects.showQuickPick(items);
 
     if (result === YES) {
       await auto.clear(context);
     }
   } catch (x) {
-    ui.showInformationMessage((x as Error).message);
+    sideEffects.showInformationMessage((x as Error).message);
   }
 };

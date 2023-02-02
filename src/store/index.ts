@@ -1,4 +1,6 @@
 import { getTOTP, SupportedEncodings } from "simple-totp";
+import { sideEffects } from "../external";
+
 export type Code = {
   name: string;
   secret: string;
@@ -13,7 +15,7 @@ export const getInfo = (code: Code) => {
   const { totp, remainingMs } = getTOTP(
     code.secret,
     code.type,
-    undefined,
+    sideEffects.timestamp(),
     code.nDigits,
     code.t0,
     code.tx

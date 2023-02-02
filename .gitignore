@@ -1,6 +1,7 @@
-out
+out/
 node_modules
 .vscode-test/
 *.vsix
 src/store/data.ts
 .DS_Store
+dist/

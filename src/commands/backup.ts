@@ -1,7 +1,7 @@
 import { ExtensionContext } from "vscode";
 import { auto } from "../store/versions/auto";
 import { askForEncryptionPassphrase } from "../store/askForEncryptionPassphrase";
-import * as ui from "../ui";
+import { sideEffects } from "../external";
 export const totpBackup = async (context: ExtensionContext) => {
   try {
     const codes = await auto.loadFromState(context);
@@ -11,10 +11,10 @@ export const totpBackup = async (context: ExtensionContext) => {
     }
     const content = await auto.backup(context, codes, passphrase);
 
-    const d = await ui.openTextDocument({ content, language: "json" });
+    const d = await sideEffects.openTextDocument({ content, language: "json" });
 
-    ui.showTextDocument(d);
-    ui.showInformationMessage(
+    sideEffects.showTextDocument(d);
+    sideEffects.showInformationMessage(
       "Save this document somewhere and don't forget the passphrase!"
     );
   } catch (x) {

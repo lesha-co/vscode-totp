@@ -1,5 +1,5 @@
 import { PassphraseGetter } from "./context";
-import * as ui from "../ui";
+import { sideEffects } from "../external";
 export const makePasswordCache: () => PassphraseGetter = () => {
   let passphrase: string | null = null;
   return async () => {
@@ -7,7 +7,7 @@ export const makePasswordCache: () => PassphraseGetter = () => {
       return passphrase;
     }
 
-    const input = await ui.showInputBox({
+    const input = await sideEffects.showInputBox({
       prompt: "Enter passphrase to unlock OTP storage",
       password: true,
     });

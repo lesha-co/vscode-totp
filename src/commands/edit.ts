@@ -1,5 +1,5 @@
-import { ExtensionContext, QuickPickItem, Disposable, commands } from "vscode";
-import * as ui from "../ui";
+import { ExtensionContext, QuickPickItem, Disposable } from "vscode";
+import { sideEffects } from "../external";
 import { replaceCode, deleteCode } from "../store/context";
 import { Result } from "./pick";
 import { Code } from "../store/index";
@@ -16,7 +16,7 @@ export const pickForEdit = async (data: Code[]): Promise<Result<Code>> => {
       label: code.name,
     }));
 
-    const qp = ui.createQuickPick<Item>();
+    const qp = sideEffects.createQuickPick<Item>();
     disposables.push(qp);
     qp.title = "Select item to edit";
     qp.items = items;
@@ -36,7 +36,7 @@ export const pickForEdit = async (data: Code[]): Promise<Result<Code>> => {
   });
 };
 export const deleteRoutine = async (context: ExtensionContext, code: Code) => {
-  const confirmation = await ui.showInputBox({
+  const confirmation = await sideEffects.showInputBox({
     placeHolder: `Please type "${code.name}" to confirm deletion`,
     prompt: `Before deleting this account, make sure that you have other means of generating codes for it`,
     validateInput: (value) => {
@@ -51,7 +51,7 @@ export const deleteRoutine = async (context: ExtensionContext, code: Code) => {
   }
 };
 export const renameRoutine = async (context: ExtensionContext, code: Code) => {
-  const newName = await ui.showInputBox({
+  const newName = await sideEffects.showInputBox({
     prompt: `Enter new name for ${code.name}`,
     value: code.name,
   });
@@ -70,7 +70,7 @@ export const totpEdit = async (context: ExtensionContext) => {
     const code = entry.data;
     const RENAME = { label: "Rename" };
     const DELETE = { label: "Delete" };
-    const result = await ui.showQuickPick([RENAME, DELETE]);
+    const result = await sideEffects.showQuickPick([RENAME, DELETE]);
     if (!result) {
       return;
     }
@@ -81,7 +81,7 @@ export const totpEdit = async (context: ExtensionContext) => {
       await deleteRoutine(context, code);
     }
 
-    await commands.executeCommand(Command.pick);
+    await sideEffects.executeCommand(Command.pick);
   } catch (x) {
     // debugger;
   }

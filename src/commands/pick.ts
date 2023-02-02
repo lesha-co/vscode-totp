@@ -3,10 +3,8 @@ import {
   QuickPickItem,
   Disposable,
   ExtensionContext,
-  commands,
-  env,
 } from "vscode";
-import * as ui from "../ui";
+import { sideEffects } from "../external";
 import { getInfo } from "../store/index";
 import { Command } from "../commands";
 import { auto } from "../store/versions/auto";
@@ -27,7 +25,7 @@ export const pickOTPService = async (data: Code[]): Promise<Result<Code>> =>
       label: code.name,
     }));
 
-    const qp = ui.createQuickPick<Item>();
+    const qp = sideEffects.createQuickPick<Item>();
     disposables.push(qp);
     qp.title = "OTP Generator";
     qp.items = items;
@@ -58,26 +56,26 @@ export const totpPick = async (context: ExtensionContext) => {
     if (result.button) {
       switch (result.data) {
         case addButton: {
-          await commands.executeCommand(Command.new);
+          await sideEffects.executeCommand(Command.new);
           break;
         }
         case editButton: {
-          await commands.executeCommand(Command.edit);
+          await sideEffects.executeCommand(Command.edit);
           break;
         }
         case restoreButton: {
-          await commands.executeCommand(Command.restore);
+          await sideEffects.executeCommand(Command.restore);
           break;
         }
         case backupButton: {
-          await commands.executeCommand(Command.backup);
+          await sideEffects.executeCommand(Command.backup);
           break;
         }
       }
     } else {
       const info = getInfo(result.data);
-      env.clipboard.writeText(info.code);
-      ui.showInformationMessage("Passphrase copied to clipboard");
+      sideEffects.writeClipboard(info.code);
+      sideEffects.showInformationMessage("Passphrase copied to clipboard");
     }
   } catch (x) {
     // debugger;
